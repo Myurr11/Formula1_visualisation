@@ -1,18 +1,11 @@
 import os
 import pickle as pickle
-
 import fastf1 as ff1
 import numpy as np
 import pandas as pd
 
 
 def downcast_df(df):
-    """
-    Reduces the size of a dataframe by downcasting floats and ints as much as possible.
-    :param DataFrame df: Dataframe to be downcast
-    :return: Downcast dataframe
-    """
-
     for column in df:
         if df[column].dtype == 'float64':
             df[column] = pd.to_numeric(df[column], downcast='float')
@@ -23,15 +16,6 @@ def downcast_df(df):
 
 
 def get_lap_data(season, gp, session_in, cache_path=None, save_path=None):
-    """
-    Loads lap data using FastF1. If specified, pickles and saves the data to the specified path.
-    :param int season: Season
-    :param str gp: Name of the gp, e.g. 'Australian' or 'Bahrain'
-    :param str session_in: Session ('Race' or 'Qualifying')
-    :param str cache_path: If caching FastF1 API call data (recommended), path to cache. None = do not use cache.
-    :param str save_path: Path to save pickled lap data dataframe (optional).
-    :return: DataFrame with processed lap data for the season, grand prix, and session specified by user.
-    """
 
     # Use cached data from API calls (or don't)
     if cache_path:
@@ -85,18 +69,6 @@ def get_lap_data(season, gp, session_in, cache_path=None, save_path=None):
 
 
 def get_telemetry_data(season, gp, session, cache_path=None, save_path=None, downsample=1):
-    """
-    Loads telemetry data using FastF1. If specified, pickles and saves the data to the specified path.
-    :param int season: Season
-    :param str gp: Name of the gp, e.g. 'Australian' or 'Bahrain'
-    :param str session: Session ('Race' or 'Qualifying')
-    :param str cache_path: If caching FastF1 API call data (recommended), path to cache. None = do not use cache.
-    :param str save_path: Path to save pickled lap data dataframe (optional).
-    :param downsample: Factor by which to reduce the telemetry data (optional). E.g. if downsample = 2, every other
-        data point will be excluded from the saved file. Used if file size is a concern.
-    :return: DataFrame with processed lap data for the season, grand prix, and session specified by user.
-    """
-
     # Use cached data from API calls (or don't)
     if cache_path:
         ff1.Cache.enable_cache(cache_path)
@@ -147,19 +119,6 @@ def get_telemetry_data(season, gp, session, cache_path=None, save_path=None, dow
 
 
 def add_session_to_site_data(season, gp, session, path_to_data, cache_path=None, downsample=1):
-    """
-    Loads, processes, and stores the specified session's data in the file structure and format needed for the Dash app.
-    Overwrites any existing saved data for the specified session (but will not impact saved data for other sessions).
-    :param int season: Season
-    :param str gp: Name of the gp, e.g. 'Australian' or 'Bahrain'
-    :param str session: Session ('Race' or 'Qualifying')
-    :param path_to_data: Path to folder where data for the Dash app is stored. Should be a folder called "data" in the
-        same folder as app.py.
-    :param str cache_path: If caching FastF1 API call data (recommended), path to cache. None = do not use cache.
-    :param downsample: Factor by which to reduce the telemetry data (optional). E.g. if downsample = 2, every other
-        data point will be excluded from the saved file. Used if file size is a concern.
-    """
-
     # Create a folder for the year if it doesn't exist already
     path_to_year = os.path.join(path_to_data, str(season))
     if not os.path.exists(path_to_year):

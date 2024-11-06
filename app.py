@@ -1,17 +1,14 @@
 import pickle as pickle
-
 from dash import dcc, Input, html, Output, State
 import dash_bootstrap_components as dbc
 from dash_extensions.enrich import DashProxy, ServersideOutput, ServersideOutputTransform
 import numpy as np
-
 import plots
-
 
 # Initialize app and server
 app = DashProxy(
     external_stylesheets=[dbc.themes.SLATE],
-    title='Unofficial F1 Viz',
+    title='F1 Viz',
     suppress_callback_exceptions=True,
     transforms=[ServersideOutputTransform()]
 )
@@ -79,7 +76,6 @@ app.layout = dbc.Container(
     ]
 )
 
-
 def build_welcome_tab():
     """
     Builds the content for the welcome tab.
@@ -87,17 +83,7 @@ def build_welcome_tab():
     return html.Div(
         dcc.Markdown(
             children="""
-                This site was developed to help fellow armchair analysts access Formula 1 data *regardless of their 
-                coding ability*. Using data made available by the [Fast F1](https://github.com/theOehrly/Fast-F1) Python
-                library ([MIT License](https://github.com/theOehrly/Fast-F1/blob/master/LICENSE) ), it provides users 
-                with interactive visualizations that allow them to explore a race in detail. **To get started, select a
-                year + GP at the top of  the page and click on the tab of interest.**
-                
-                If you want to tinker with the data in Python yourself, I found 
-                [the examples](https://theoehrly.github.io/Fast-F1/examples_gallery/index.html) from the Fast F1 
-                documentation to be helpful. 
-                 
-                Made with ❤   in Cambridge, MA.
+                This is a Project developed by Me to showcase data visualisation
                 """
         )
     )
@@ -131,13 +117,7 @@ def build_lap_tab(year, grand_prix):
     lap_time_footer = """
         Use this visualization to get a bird's eye view of lap times over the race as a whole. 
         Hover to see a driver's lap time for a specific lap.
-        
-        A few notes:
-        * Drivers are listed in order of final position
-        * Color represents speed (red = slow, white = fast), pit stops are marked with an 
-        asterisk, and missing lap time information is marked in charcoal
-        * The colorscale is capped at a % of the fastest lap time. Any laps slower than that are 
-        assigned the darkest shade of red."""
+    """
 
     content = [
         dbc.Row(
